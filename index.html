@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Lavadora Automática</title>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <col>
+    <h1>Lavadora Automática Pro X-MAX 5000</h1>
+    <h2>Control de lavado</h2>
+    <p>Seleccione el ciclo de lavado y la duración del lavado.</p>
+    <p>El progreso del lavado se muestra en porcentaje.</p>
+
+
+    <div class="col">
+        <label for="cycle">Ciclo de lavado:</label>
+        <select id="cycle">
+            <option value="delicado">Delicado</option>
+            <option value="normal">Normal</option>
+            <option value="pesado">Pesado</option>
+        </select>
+    </div>
+    <div>
+        <label for="duration">Duración (minutos):</label>
+        <input type="number" id="duration" min="1" max="120" value="1">
+    </div>
+    <div id="progress">Progreso: 0%</div>
+    <button class="button" onclick="startWash()">Iniciar lavado</button>
+    <button class="button" onclick="stopWash()">Detener lavado</button>
+
+    <script>
+        var isWashing = false;
+        var intervalId;
+        var progress = 0;
+        var duration = 0;
+
+        function startWash() {
+            if (!isWashing) {
+                var cycle = document.getElementById("cycle").value;
+                duration = parseInt(document.getElementById("duration").value);
+                isWashing = true;
+                progress = 0;
+                updateProgress();
+                intervalId = setInterval(updateProgress, 1000);
+                simulateWash(cycle, duration);
+            }else {
+                console.log("Lavado ya iniciado.");
+            }
+        }
+
+        function stopWash() {
+            if (isWashing) {
+                isWashing = false;
+                clearInterval(intervalId);
+                progress = 0;
+                updateProgress();
+                console.log("Lavado detenido.");
+            }
+        }
+
+        function updateProgress() {
+            var progressElement = document.getElementById("progress");
+            progressElement.innerHTML = "Progreso: " + progress + "%";
+        }
+
+        function simulateWash(cycle, duration) {
+            console.log("Iniciando lavado: " + cycle + ", Duración: " + duration + " minutos.");
+            var progressIncrement = 100 / duration;
+            var washIntervalId = setInterval(function () {
+                progress += progressIncrement;
+                if (progress >= 100) {
+                    clearInterval(washIntervalId);
+                    console.log("Lavado completado.");
+                    stopWash();
+                }
+                updateProgress();
+            }, 1000);
+        }
+
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
